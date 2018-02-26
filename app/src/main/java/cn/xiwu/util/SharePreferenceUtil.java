@@ -3,11 +3,7 @@ package cn.xiwu.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * @author 王维波
- * @time 2016/8/11  11:50
- * @desc ${TODD}
- */
+
 public class SharePreferenceUtil {
 
     public static final String name ="configaaa";
