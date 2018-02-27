@@ -72,7 +72,7 @@ public class IrregularView extends ImageView
         paddingLeft = this.getPaddingLeft();
         paddingTop = this.getPaddingTop();
         mSampleWidth = 30;//保存在Strings.xml里面的坐标样本图片宽度
-        mSampleHeight = 71;//保存在Strings.xml里面的坐标样本图片高度
+        mSampleHeight = 29;//保存在Strings.xml里面的坐标样本图片高度
     }
 
     public void setImgResIds(int[] resIds)
@@ -145,6 +145,8 @@ public class IrregularView extends ImageView
             String coordinatesCount = "";
             String coordinatesStr = "";
             String coordinates = "";
+            String pixels = "";
+
             int count = 0;
             for (int i = 0; i < resIds.length; i++)
             {
@@ -155,15 +157,21 @@ public class IrregularView extends ImageView
                 int width = bitmap.getWidth();
                 coordinates = "";
                 count = 0;
+
                 Log.v("c", width + "--" + height);
                 for (int j = 0; j < width; j++)
                 {
                     for (int k = 0; k < height; k++)
                     {
                         int pixel = bitmap.getPixel(j, k);
-                        int red = Color.red(pixel);
-                        if (red >= 150)
+                        int red = Color.blue(pixel);
+                        if (red > 0)
                         {
+                            //pixels = pixels + red + "*******";
+                        }
+                        if (red >= 207)
+                        {
+                            pixels = pixels + red + "*******";
                             int x = j * (width / mainBitmapWidth) + paddingLeft;
                             int y = k * (height / mainBitmapHeight) + paddingTop;
                             coordinates = coordinates + x + "%%" + y + "====";
@@ -171,13 +179,15 @@ public class IrregularView extends ImageView
                         }
                     }
                 }
+                L.showLogCompletion(pixels, pixels.length(), i + "3699pixels");
                 coordinatesStr = coordinatesStr + coordinates;
                 coordinatesCount = coordinatesCount + count + "====";
             }
             SharePreferenceUtil.saveString(mContext, "coordinates", coordinatesStr, "irregularview");
             SharePreferenceUtil.saveString(mContext, "coordinatescount", coordinatesCount, "irregularview");
-            L.showLogCompletion(coordinatesStr, coordinatesStr.length(),"3699coorstr");
-            L.showLogCompletion(coordinatesCount, coordinatesCount.length(),"3699coorcount");
+            L.showLogCompletion(coordinatesStr, coordinatesStr.length(), "3699coorstr");
+
+            L.showLogCompletion(coordinatesCount, coordinatesCount.length(), "3699coorcount");
         }
     }
 
@@ -237,11 +247,11 @@ public class IrregularView extends ImageView
                 //获取控件高宽
                 mWidgetHeight = IrregularView.this.getHeight();
                 mWidgetWidth = IrregularView.this.getWidth();
-               // float v = (x - paddingLeft) * mSampleWidth * (float) mainBitmapWidth / (mWidgetWidth * mBitWidth);//mWidgetWidth/x;
-                float v = (x - paddingLeft) * (float)mSampleWidth / (mWidgetWidth);//mWidgetWidth/x;
+                // float v = (x - paddingLeft) * mSampleWidth * (float) mainBitmapWidth / (mWidgetWidth * mBitWidth);//mWidgetWidth/x;
+                float v = (x - paddingLeft) * (float) mSampleWidth / (mWidgetWidth);//mWidgetWidth/x;
                 locationInBitmapX = (int) (v);
-               // float v1 = (y - paddingTop) * mSampleHeight * (float) mainBitmapHeight / (mWidgetHeight * mBitHeight);//mWidgetHeight/y;
-                float v1 = (y - paddingTop) * (float)mSampleHeight / (mWidgetHeight );//mWidgetHeight/y;
+                // float v1 = (y - paddingTop) * mSampleHeight * (float) mainBitmapHeight / (mWidgetHeight * mBitHeight);//mWidgetHeight/y;
+                float v1 = (y - paddingTop) * (float) mSampleHeight / (mWidgetHeight);//mWidgetHeight/y;
                 locationInBitmapY = (int) (v1);
                 Log.v("3699bodyxy", locationInBitmapX + "%%" + locationInBitmapY);
                 int index = -1;
@@ -250,6 +260,7 @@ public class IrregularView extends ImageView
                     if (mXY.get(i).equals(locationInBitmapX + "%%" + locationInBitmapY))
                     {
                         index = i;
+                        Log.v("3699index",index+"");
                     }
                 }
                 if (index > 0)
